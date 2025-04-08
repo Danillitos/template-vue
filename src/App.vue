@@ -1,15 +1,22 @@
 <script setup>
   import { ref } from 'vue';	
+  import axios from "axios";
   let username;
   let senha;
-  const savedLogin = ref('');
-  const savedSenha = ref('');
+  const resposta = ref('');
 
   function saveLogin() {
-    console.log("a");
-    savedLogin.value = username;
-    savedSenha.value = senha;
+
+    console.log("aa")
+    axios.post('http://localhost:3000/receber', {
+      username: username,
+      senha: senha
+    })
+    .then(response => {
+      resposta.value = response.data.mensagem;
+    })
   }
+
 
 </script>
 
@@ -29,9 +36,8 @@
       </button>
     </div>
 
-    <div class="text-xl text-black text-center">
-      {{ savedLogin }} <br>
-      {{ savedSenha }}
+    <div class="text-xl text-black text-center"> <br>
+      {{ resposta }}
     </div>
   </div>
 </template>
