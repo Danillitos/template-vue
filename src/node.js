@@ -11,6 +11,7 @@ let usuarios = [];
 
 app.post('/receber', (req, res) => {
     const { username, senha } = req.body;
+    console.log("cabrunco")
     
     const jaExiste = usuarios.some(usuarios => usuarios.username === username && usuarios.senha === senha);
 
