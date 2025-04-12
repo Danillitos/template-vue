@@ -5,16 +5,17 @@
   let senha;
   const resposta = ref('');
 
-  function getLogin() {
-    axios.get('http://localhost:3000/consulta', {
-      params: {
-        username: username,
-        senha: senha
-      }
+  function saveLogin() {
+
+    console.log("aa")
+    axios.post('http://localhost:3000/receber', {
+      username: username,
+      senha: senha
     })
     .then(response => {
-      resposta.value = response.data.messagem
-    })   
+      resposta.value = response.data.mensagem;
+      console.log(username, senha);
+    })
   }
 
 
@@ -31,7 +32,7 @@
         <label for="senha">Senha</label>
         <input v-model="senha" type="password" class="border border-slate-500 bg-white rounded h-8 px-2">
       </div>
-      <button class="flex justify-center items-center bg-green-800 px-4 h-8 mt-4 rounded w-full cursor-pointer shadow text-white hover:opacity-80 transition duration-150 will-change-auto" @click="getLogin()">
+      <button class="flex justify-center items-center bg-green-800 px-4 h-8 mt-4 rounded w-full cursor-pointer shadow text-white hover:opacity-80 transition duration-150 will-change-auto" @click="saveLogin()">
         Enviar
       </button>
     </div>
@@ -40,9 +41,6 @@
     </div>
     <div>
       <p class="text-green-800 hover:opacity-80 cursor-pointer"><router-link to="/SignIn">Criar conta</router-link></p>
-    </div>
-    <div>
-      <p class="mt-4 text-red-500" v-if="resposta">{{ resposta }}</p>
     </div>
   </div>
 </template>

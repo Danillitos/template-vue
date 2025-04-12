@@ -1,6 +1,5 @@
 <script setup>
 import { ref } from 'vue';
-import axios from 'axios';
 
 let username; 
 let senha;
@@ -12,18 +11,9 @@ let notifyError = ref('');
 function saveLogin() {
     savedUsername.value = username;
     savedSenha.value = senha;
-
-    if (savedSenha.value===senhaConfirm.value && username != null) {
+    if (savedSenha.value===senhaConfirm.value) {
         console.log(senha)
         notifyError.value = false
-        axios.post('http://localhost:3000/enviar', {
-            username: username,
-            senha: senha
-        })
-        .then(response => {
-            resposta.value = response.data.mensagem;
-            console.log(username, senha);
-        })
     }
     else {
         notifyError.value = true
@@ -62,7 +52,7 @@ function saveLogin() {
             <p class="text-green-800 hover:opacity-80 cursor-pointer"><router-link to="/">Já tenho uma conta</router-link></p>
         </div>
         <div>
-            <p v-if="notifyError" class="text-red-800">Favor, preencha todos os campos corretamente!</p>
+            <p v-if="notifyError" class="text-red-800">Confirmação de senha errada!</p>
         </div>
     </div>
 </template>
