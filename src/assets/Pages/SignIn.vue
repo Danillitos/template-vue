@@ -8,6 +8,7 @@ let senhaConfirm = ref('');
 let savedUsername = ref('');
 let savedSenha = ref('');
 let notifyError = ref('');
+let resposta = ref('');
 
 function saveLogin() {
     savedUsername.value = username;
@@ -16,19 +17,27 @@ function saveLogin() {
     if (savedSenha.value===senhaConfirm.value && username != null) {
         console.log(senha)
         notifyError.value = false
+
         axios.post('http://localhost:3000/enviar', {
-            username: username,
-            senha: senha
+            newUsername: username,
+            newSenha: senha
         })
         .then(response => {
             resposta.value = response.data.mensagem;
             console.log(username, senha);
         })
+        .catch(error => {
+            if (error.response && error.response.data && error.response.data.erro) {
+                resposta.value = error.response.data.erro;
+            } 
+            else {
+                resposta.value = "Ocorreu um erro inesperado.";
+            }
+        })
     }
     else {
         notifyError.value = true
     }
-
 }
 
 
@@ -63,6 +72,7 @@ function saveLogin() {
         </div>
         <div>
             <p v-if="notifyError" class="text-red-800">Favor, preencha todos os campos corretamente!</p>
+            <p class="text-red-800">{{resposta}}</p>
         </div>
     </div>
 </template>
