@@ -15,6 +15,8 @@ const pool = new Pool({
 const app = express();
 const port = 3000;
 
+const specialCharacters = ["~", "`", "!", "@", "#", "$", "%", "^", "&", "*"];
+
 app.use(cors());
 app.use(express.json());
 
@@ -27,6 +29,9 @@ app.post('/enviar', async (req, res) => {
 
   if (verifyRepetition.rows.length > 0) {
     return res.status(401).json({ erro: 'Nome de usuário já utilizado. Favor, escolha outro.'})
+  }
+  else if (specialCharacters.some(char => newSenha.includes(char)) === false && newSenha.length - newSenha.replace(/[a-z]/g, '').length < 1 && newSenha.length - newSenha.replace(/[A-Z]/g, '').length < 1){
+    return res.status(401).json({ erro: 'Não segue os parametros'})
   }
 
   try {
